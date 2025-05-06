@@ -7,12 +7,12 @@
 WiFiClient client;
 
 void setup() {
-  // Initialize serial, WiFi and ThingSpeak.
+  // Initialize serial, WiFi and ThingSpeak
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
   ThingSpeak.begin(client);
 
-  // Set random seed using pin 0 so random values are different every time on startup.
+  // Set random seed using pin 0 so random values are different every time on startup
   randomSeed(analogRead(0));
 }
 
@@ -23,7 +23,7 @@ void loop() {
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(SSID);
     while (WiFi.status() != WL_CONNECTED) {
-      WiFi.begin(SSID, PASSWORD); // Connect to WPA/WPA2 network. Change this line if using open or WEP network
+      WiFi.begin(SSID, PASSWORD);
       Serial.print(".");
       delay(5000);
     }
@@ -55,7 +55,7 @@ void loop() {
   ThingSpeak.setField(3, touchVal);
   ThingSpeak.setField(4, chipTemp);
 
-  // Write value to Field 1 of a ThingSpeak Channel
+  // Write fields to ThingSpeak channel
   int httpCode = ThingSpeak.writeFields(CHANNEL_ID, WRITE_API_KEY);
 
   if (httpCode == 200) {
@@ -65,6 +65,6 @@ void loop() {
     Serial.println("Problem writing to channel. HTTP error code " + String(httpCode));
   }
 
-  // Wait 20 seconds to update the channel again
+  // Wait 20 seconds to update channel due to ThingSpeak's allowable update interval
   delay(20000);
 }
