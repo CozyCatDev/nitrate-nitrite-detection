@@ -1,70 +1,74 @@
-#include <WiFi.h>
+#include "macros.h"
 #include "secrets.h"
-#include "ThingSpeak.h"
-
-#define TOUCH_PIN 4
-
-WiFiClient client;
+#include "init_wifi.h"
+#include "motor_control.h"
+#include "oled_control.h"
+#include "thingspeak_control.h"
 
 void setup() {
-  // Initialize serial, WiFi and ThingSpeak
   Serial.begin(115200);
-  WiFi.mode(WIFI_STA);
-  ThingSpeak.begin(client);
-
+  
   // Set random seed using pin 0 so random values are different every time on startup
   randomSeed(analogRead(0));
+
+  initWifi();
+  initThingSpeak();
+  initDisplay();
+  initMotor();
+  initRelay();
+  initButton();
 }
 
 void loop() {
+  Serial.println("Ready. Waiting for button press…");
+  displayCenteredText("Ready...");
 
-  // Connect or reconnect to WiFi
-  if (WiFi.status() != WL_CONNECTED) {
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(SSID);
-    while (WiFi.status() != WL_CONNECTED) {
-      WiFi.begin(SSID, PASSWORD);
-      Serial.print(".");
-      delay(5000);
-    }
-    Serial.println("\nConnected.");
+  // wait for button press (LOW)
+  while (digitalRead(BUTTON_PIN) == HIGH) {
+    delay(10);
+  }
+  // simple debounce
+  delay(50);
+  // wait for release
+  while (digitalRead(BUTTON_PIN) == LOW) {
+    delay(10);
   }
 
-  // Get touch and chip temperature values
-  int touchVal = touchRead(TOUCH_PIN);
-  float chipTemp = temperatureRead();
+  Serial.println("\n=== Button pressed! Beginning one full cycle ===");
+  displayCenteredText("START...");
 
-  // Generate random absorbance values
-  float nitrateAbs = random(800,901) / 1000.0;
-  float nitriteAbs = random(800,901) / 1000.0;
+  // P1 forward → backward
+  displayCenteredText("P1 -> FORWARD");
+  motorControl(0, FORWARD, PUMP_DURATION);
+  delay(PUMP_DELAY);
 
-  // Print values to serial monitor
-  Serial.print("Nitrate absorbance: ");
-  Serial.print(nitrateAbs);
-  Serial.print(", nitrite absorbance: ");
-  Serial.print(nitriteAbs);
-  Serial.print(", touch: ");
-  Serial.print(touchVal);
-  Serial.print(", temp: ");
-  Serial.print(chipTemp);
-  Serial.println("°C");
-  
-  // Set field values
-  ThingSpeak.setField(1, nitrateAbs);
-  ThingSpeak.setField(2, nitriteAbs);
-  ThingSpeak.setField(3, touchVal);
-  ThingSpeak.setField(4, chipTemp);
+  displayCenteredText("P1 -> BACKWARD");
+  motorControl(0, BACKWARD, PUMP_DURATION);
+  delay(PUMP_DELAY);
 
-  // Write fields to ThingSpeak channel
-  int httpCode = ThingSpeak.writeFields(CHANNEL_ID, WRITE_API_KEY);
+  // P2 forward → backward
+  displayCenteredText("P2 -> FORWARD");
+  motorControl(1, FORWARD, PUMP_DURATION);
+  delay(PUMP_DELAY);
 
-  if (httpCode == 200) {
-    Serial.println("Channel write successful.");
-  }
-  else {
-    Serial.println("Problem writing to channel. HTTP error code " + String(httpCode));
-  }
+  displayCenteredText("P2 -> BACKWARD");
+  motorControl(1, BACKWARD, PUMP_DURATION);
+  delay(PUMP_DELAY);
 
-  // Wait 20 seconds to update channel due to ThingSpeak's allowable update interval
-  delay(20000);
+  // P3 forward → backward
+  displayCenteredText("P3 -> FORWARD");
+  motorControl(2, FORWARD, PUMP_DURATION);
+  delay(PUMP_DELAY);
+
+  displayCenteredText("P3 -> BACKWARD");
+  motorControl(2, BACKWARD, PUMP_DURATION);
+
+  vibrate();
+
+  Serial.println("=== Cycle complete. Waiting for next button press…");
+  displayCenteredText("Cycle complete...");
+
+  sendThingSpeakData();
 }
+
+

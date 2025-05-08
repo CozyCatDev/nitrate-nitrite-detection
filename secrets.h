@@ -6,7 +6,7 @@
 #define WRITE_API_KEY "abcd"
 
 // Enter WiFi credentials
-#define SSID "abcd"
-#define PASSWORD "abcd"
+extern const char* SSID;
+extern const char* PASSWORD;
 
 #endif
