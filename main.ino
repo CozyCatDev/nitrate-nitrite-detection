@@ -35,6 +35,7 @@ void setup() {
   Serial.begin(115200);
 
   // OLED
+  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println(F("SSD1306 allocation failed"));
     for (;;);
@@ -78,42 +79,30 @@ void loop() {
   displayCenteredText("START...");
 
   // P1 forward → backward
-  Serial.print("P1 → FORWARD for "); Serial.print(runTime); Serial.println(" ms");
   displayCenteredText("P1 -> FORWARD");
   motorControl(0, FORWARD, runTime);
-  Serial.println("P1 stopped.");
   delay(interStep);
 
-  Serial.print("P1 → BACKWARD for "); Serial.print(runTime); Serial.println(" ms");
   displayCenteredText("P1 -> BACKWARD");
   motorControl(0, BACKWARD, runTime);
-  Serial.println("P1 stopped.");
   delay(interStep);
 
   // P2 forward → backward
-  Serial.print("P2 → FORWARD for "); Serial.print(runTime); Serial.println(" ms");
   displayCenteredText("P2 -> FORWARD");
   motorControl(1, FORWARD, runTime);
-  Serial.println("P2 stopped.");
   delay(interStep);
 
-  Serial.print("P2 → BACKWARD for "); Serial.print(runTime); Serial.println(" ms");
   displayCenteredText("P2 -> BACKWARD");
   motorControl(1, BACKWARD, runTime);
-  Serial.println("P2 stopped.");
   delay(interStep);
 
   // P3 forward → backward
-  Serial.print("P3 → FORWARD for "); Serial.print(runTime); Serial.println(" ms");
   displayCenteredText("P3 -> FORWARD");
   motorControl(2, FORWARD, runTime);
-  Serial.println("P3 stopped.");
   delay(interStep);
 
-  Serial.print("P3 → BACKWARD for "); Serial.print(runTime); Serial.println(" ms");
   displayCenteredText("P3 -> BACKWARD");
   motorControl(2, BACKWARD, runTime);
-  Serial.println("P3 stopped.");
 
   vibrate();
 
@@ -149,29 +138,34 @@ void vibrate(){
 
 void motorControl(uint8_t motorId, Direction dir, unsigned long durationMs) {
   stopAll();  // ensure no two motors run simultaneously
-
+  if(dir != STOP) {Serial.print("P"); Serial.print(motorId); Serial.print(" -> ")};
   // set direction pins
   switch (dir) {
     case FORWARD:
+      Serial.print("FORWARD");
       digitalWrite(motorPins[motorId][0], HIGH);
       digitalWrite(motorPins[motorId][1], LOW);
       break;
     case BACKWARD:
+      Serial.print("BACKWARD");
       digitalWrite(motorPins[motorId][0], LOW);
       digitalWrite(motorPins[motorId][1], HIGH);
       break;
     case STOP:
     default:
+      Serial.print("P"); Serial.print(motorId); Serial.println(" stopped.");
       digitalWrite(motorPins[motorId][0], LOW);
       digitalWrite(motorPins[motorId][1], LOW);
       return;  // nothing more to do
   }
-
+  
   // run for given duration, then stop
-  if (durationMs > 0) {
+  if (dir != STOP && durationMs > 0) {
+    Serial.print(" for "); Serial.print(durationMs); Serial.println("ms");
     delay(durationMs);
     digitalWrite(motorPins[motorId][0], LOW);
     digitalWrite(motorPins[motorId][1], LOW);
+    Serial.print("P"); Serial.print(motorId); Serial.println(" stopped.");
   }
 }
 
@@ -180,4 +174,5 @@ void stopAll() {
     digitalWrite(motorPins[i][0], LOW);
     digitalWrite(motorPins[i][1], LOW);
   }
+  Serial.println("All motors stopped.");
 }
