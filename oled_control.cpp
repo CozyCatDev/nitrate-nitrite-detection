@@ -31,13 +31,12 @@ void displayCenteredText(const String &text) {
   display.display();
 }
 
-void showAnimatedScreen(uint8_t motorId, unsigned long screenDuration){
-  const String currentStage = motorId == 0 ? "SAMPLING" : motorId == 1 ? "DISSOLUTION" : motorId == 2 ? "DISPEL" : motorId == 3 ? "MIXING" : "NONE";
+void showAnimatedScreen(const byte frames[][128], const String &text, unsigned long screenDuration){
   // Measure the pixel bounds of the text
   int16_t x1, y1;
   uint16_t w, h;
   display.clearDisplay();
-  display.getTextBounds(currentStage, 0, 0, &x1, &y1, &w, &h);
+  display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
 
   int16_t textX = (SCREEN_WIDTH  - w) / 2 - x1;
   const int16_t textY = 0;  // top row
@@ -48,7 +47,7 @@ void showAnimatedScreen(uint8_t motorId, unsigned long screenDuration){
   while(millis() - currentTime < screenDuration){
     display.clearDisplay();
     display.setCursor(textX, textY);
-    display.print(currentStage);
+    display.print(text);
     display.drawBitmap(48, 18, frames[currentFrame], FRAME_WIDTH, FRAME_HEIGHT, 1);
     display.display();
     currentFrame = (currentFrame + 1) % FRAME_COUNT;

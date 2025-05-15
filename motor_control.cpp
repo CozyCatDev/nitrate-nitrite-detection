@@ -53,7 +53,7 @@ void motorControl(uint8_t motorId, Direction dir) {
         return;  // nothing more to do
     }
 
-    if (dir != STOP) {Serial.print(" for "); Serial.print(motorId == 0 ? SAMPLING_DURATION : motorId == 1 ? MIXING_DURATION : motorId == 2 ? DISPEL_DURATION : 0); Serial.println("ms");}
+    if (dir != STOP) {Serial.print(" for "); Serial.print(motorId == 0 ? SAMPLING_DURATION : motorId == 1 ? MIXING_DURATION : motorId == 2 ? DISPELLING_DURATION : 0); Serial.println("ms");}
 }
 
 // stop all pumps

@@ -3,9 +3,10 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
-#include "oled_control.h"
 #include "macros.h"
 #include "secrets.h"
+#include "frames.h"
+#include "oled_control.h"
 
 void initWifi();
 

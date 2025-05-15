@@ -10,7 +10,5 @@ void initWifi(){
         Serial.print(".");
         delay(5000);
     }
-    display.clearDisplay();
-    display.display();
     Serial.println("\nConnected.");
 }

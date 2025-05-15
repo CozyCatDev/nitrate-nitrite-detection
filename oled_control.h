@@ -12,6 +12,6 @@
 extern Adafruit_SSD1306 display;
 void initDisplay();
 void displayCenteredText(const String &text);
-void showAnimatedScreen(uint8_t motorId, unsigned long screenDuration);
+void showAnimatedScreen(const byte frames[][128], const String &text, unsigned long screenDuration);
 
 #endif
