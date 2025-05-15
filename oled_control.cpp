@@ -33,7 +33,7 @@ void displayCenteredText(const String &text) {
 }
 
 void showAnimatedScreen(uint8_t motorId, unsigned long screenDuration){
-  const String currentStage = motorId == 0 ? "SAMPLING" : motorId == 1 ? "MIXING" : motorId == 2 ? "DISPEL" : "NONE";
+  const String currentStage = motorId == 0 ? "SAMPLING" : motorId == 1 ? "DISSOLUTION" : motorId == 2 ? "DISPEL" : motorId == 3 ? "MIXING" : "NONE";
   // Measure the pixel bounds of the text
   int16_t x1, y1;
   uint16_t w, h;

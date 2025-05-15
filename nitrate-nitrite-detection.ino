@@ -37,38 +37,34 @@ void loop() {
   Serial.println("\n=== Button pressed! Beginning one full cycle ===");
   displayCenteredText("START...");
 
-  // P1 forward → backward
-  displayCenteredText("P1 -> FORWARD");
-  motorControl(0, FORWARD, PUMP_DURATION);
+  // sampling stage
+  motorControl(0, FORWARD);
+  showAnimatedScreen(0, SAMPLING_DURATION);
+  motorControl(0, STOP);
   delay(PUMP_DELAY);
 
-  displayCenteredText("P1 -> BACKWARD");
-  motorControl(0, BACKWARD, PUMP_DURATION);
+  // add test solution stage
+  motorControl(1, FORWARD);
+  showAnimatedScreen(1, ADD_SOLUTION_DURATION);
+  motorControl(1, STOP);
   delay(PUMP_DELAY);
 
-  // P2 forward → backward
-  displayCenteredText("P2 -> FORWARD");
-  motorControl(1, FORWARD, PUMP_DURATION);
-  delay(PUMP_DELAY);
-
-  displayCenteredText("P2 -> BACKWARD");
-  motorControl(1, BACKWARD, PUMP_DURATION);
-  delay(PUMP_DELAY);
-
-  // P3 forward → backward
-  displayCenteredText("P3 -> FORWARD");
-  motorControl(2, FORWARD, PUMP_DURATION);
-  delay(PUMP_DELAY);
-
-  displayCenteredText("P3 -> BACKWARD");
-  motorControl(2, BACKWARD, PUMP_DURATION);
-
+  // mixing stage
   vibrate();
+  showAnimatedScreen(3, MIXING_DURATION);
+  digitalWrite(RELAY_PIN, HIGH);
+  delay(PUMP_DELAY);
+
+  sendThingSpeakData();
+
+  // dispel stage
+  motorControl(2, FORWARD);
+  showAnimatedScreen(2, DISPEL_DURATION);
+  motorControl(2, STOP);
+  delay(PUMP_DELAY);
 
   Serial.println("=== Cycle complete. Waiting for next button press…");
   displayCenteredText("Cycle complete...");
-
-  sendThingSpeakData();
 }
 
 

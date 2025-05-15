@@ -27,13 +27,10 @@ void initButton(){
 void vibrate(){
     digitalWrite(RELAY_PIN, LOW);
     Serial.println("Vibrating......");
-    delay(3000);
-    digitalWrite(RELAY_PIN, HIGH);
-    delay(PUMP_DELAY);
 }
 
 // toggle peristaltic pump in forward/backward direction for specific duration
-void motorControl(uint8_t motorId, Direction dir, unsigned long durationMs) {
+void motorControl(uint8_t motorId, Direction dir) {
     stopAll();  // ensure no two motors run simultaneously
     if(dir != STOP) {Serial.print("P"); Serial.print(motorId + 1); Serial.print(" -> ");}
     // set direction pins
@@ -57,14 +54,7 @@ void motorControl(uint8_t motorId, Direction dir, unsigned long durationMs) {
         return;  // nothing more to do
     }
 
-    // run for given duration, then stop
-    if (dir != STOP && durationMs > 0) {
-        Serial.print(" for "); Serial.print(durationMs); Serial.println("ms");
-        delay(durationMs);
-        digitalWrite(motorPins[motorId][0], LOW);
-        digitalWrite(motorPins[motorId][1], LOW);
-        Serial.print("P"); Serial.print(motorId + 1); Serial.println(" stopped.");
-    }
+    if (dir != STOP) {Serial.print(" for "); Serial.print(motorId == 0 ? SAMPLING_DURATION : motorId == 1 ? MIXING_DURATION : motorId == 2 ? DISPEL_DURATION : 0); Serial.println("ms");}
 }
 
 // stop all pumps

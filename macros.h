@@ -19,7 +19,10 @@
 #define P3B 14
 
 // duration values
-#define PUMP_DURATION 2000
+#define SAMPLING_DURATION 2000
+#define ADD_SOLUTION_DURATION 2000
+#define MIXING_DURATION 2000
+#define DISPEL_DURATION 2000
 #define PUMP_DELAY 500
 
 #endif

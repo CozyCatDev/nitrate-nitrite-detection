@@ -9,7 +9,7 @@ void initMotor();
 void initRelay();
 void initButton();
 void vibrate();
-void motorControl(uint8_t motorId, Direction dir, unsigned long durationMs);
+void motorControl(uint8_t motorId, Direction dir);
 void stopAll();
 
 #endif
