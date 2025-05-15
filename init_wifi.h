@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
+#include "oled_control.h"
 #include "macros.h"
 #include "secrets.h"
 

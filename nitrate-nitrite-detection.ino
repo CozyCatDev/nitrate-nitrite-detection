@@ -10,13 +10,19 @@ void setup() {
   
   // Set random seed using pin 0 so random values are different every time on startup
   randomSeed(analogRead(0));
-
+  initDisplay();
   initWifi();
   initThingSpeak();
-  initDisplay();
   initMotor();
   initRelay();
   initButton();
+  
+  // 31.5ml
+  // 35.5
+  // 35
+
+  // 35 / 30 = 1.167 ml / s
+  // 1.167 * (35-31.5) = 4.083s
 }
 
 void loop() {
@@ -37,10 +43,22 @@ void loop() {
   Serial.println("\n=== Button pressed! Beginning one full cycle ===");
   displayCenteredText("START...");
 
+  // clean P1 tube
+  motorControl(0, BACKWARD);
+  delay(CLEAN_DURATION);
+  motorControl(0, STOP);
+  delay(PUMP_DELAY);
+
   // sampling stage
   motorControl(0, FORWARD);
   showAnimatedScreen(0, SAMPLING_DURATION);
   motorControl(0, STOP);
+  delay(PUMP_DELAY);
+
+  // clean P2 tube
+  motorControl(1, BACKWARD);
+  delay(CLEAN_DURATION);
+  motorControl(1, STOP);
   delay(PUMP_DELAY);
 
   // add test solution stage
@@ -55,6 +73,7 @@ void loop() {
   digitalWrite(RELAY_PIN, HIGH);
   delay(PUMP_DELAY);
 
+  // TODO: add longer delay for detecting nitrate
   sendThingSpeakData();
 
   // dispel stage
@@ -65,6 +84,7 @@ void loop() {
 
   Serial.println("=== Cycle complete. Waiting for next button press…");
   displayCenteredText("Cycle complete...");
+  
 }
 
 

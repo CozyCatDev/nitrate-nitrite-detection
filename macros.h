@@ -7,22 +7,28 @@
 
 // pin definitions
 #define TOUCH_PIN 4
-#define RELAY_PIN 12
+#define RELAY_PIN 16
 #define BUTTON_PIN 23
 
+//3 -> 1
+//1 -> 2
+//
 // motor driver pins
-#define P1A 26
-#define P1B 25
-#define P2A 33
-#define P2B 32
-#define P3A 27
-#define P3B 14
+#define P1A 27
+#define P1B 14
+#define P2B 26
+#define P2A 25
+#define P3A 33
+#define P3B 32
 
 // duration values
-#define SAMPLING_DURATION 2000
-#define ADD_SOLUTION_DURATION 2000
-#define MIXING_DURATION 2000
-#define DISPEL_DURATION 2000
+#define CLEAN_DURATION 5000
+#define SAMPLING_DURATION 42162 
+#define ADD_SOLUTION_DURATION 3090
+#define MIXING_DURATION 3000
+#define DISPEL_DURATION 50000
 #define PUMP_DELAY 500
 
+
+//66.5ml per min
 #endif

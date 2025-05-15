@@ -5,9 +5,12 @@ void initWifi(){
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(SSID);
     while (WiFi.status() != WL_CONNECTED) {
+        displayCenteredText("Connecting to WiFi");
         WiFi.begin(SSID, PASSWORD);
         Serial.print(".");
         delay(5000);
     }
+    display.clearDisplay();
+    display.display();
     Serial.println("\nConnected.");
 }

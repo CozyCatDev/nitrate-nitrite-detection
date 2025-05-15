@@ -1,6 +1,5 @@
 #include "oled_control.h"
 
-// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 void initDisplay(){
@@ -37,21 +36,24 @@ void showAnimatedScreen(uint8_t motorId, unsigned long screenDuration){
   // Measure the pixel bounds of the text
   int16_t x1, y1;
   uint16_t w, h;
+  display.clearDisplay();
   display.getTextBounds(currentStage, 0, 0, &x1, &y1, &w, &h);
 
-  int16_t x = (SCREEN_WIDTH  - w) / 2 - x1;
-
-  // horizontally center text and align to top
-  display.setCursor(x, 0);
+  int16_t textX = (SCREEN_WIDTH  - w) / 2 - x1;
+  const int16_t textY = 0;  // top row
 
   int currentFrame = 0;
 
   unsigned long currentTime = millis();
   while(millis() - currentTime < screenDuration){
     display.clearDisplay();
+    display.setCursor(textX, textY);
     display.print(currentStage);
     display.drawBitmap(48, 18, frames[currentFrame], FRAME_WIDTH, FRAME_HEIGHT, 1);
+    display.display();
     currentFrame = (currentFrame + 1) % FRAME_COUNT;
     delay(FRAME_DELAY);
   }
+  display.clearDisplay();
+  display.display();
 }

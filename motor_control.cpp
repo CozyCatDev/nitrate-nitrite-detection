@@ -39,7 +39,6 @@ void motorControl(uint8_t motorId, Direction dir) {
         Serial.print("FORWARD");
         digitalWrite(motorPins[motorId][0], HIGH);
         digitalWrite(motorPins[motorId][1], LOW);
-        // showAnimatedScreen(motorId, durationMs);
         break;
         case BACKWARD:
         Serial.print("BACKWARD");
