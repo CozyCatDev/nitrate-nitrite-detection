@@ -1,12 +1,16 @@
 #ifndef MACROS_H
 #define MACROS_H
 
+// IoT platform to use
+// #define USE_THINGSPEAK
+#define USE_ARDUINO_CLOUD
+
 // OLED dimensions
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 
 // pin definitions
-#define TOUCH_PIN 4
+// #define TOUCH_PIN 4
 #define RELAY_PIN 16
 #define BUTTON_PIN 23
 
