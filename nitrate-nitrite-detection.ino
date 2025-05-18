@@ -9,6 +9,10 @@
 #include "oled_control.h"
 #include "iot_control.h"
 
+#ifdef USE_THINGSPEAK
+  bool isRunning = false;
+#endif
+
 void setup() {
   Serial.begin(115200);
   
@@ -35,7 +39,9 @@ void loop() {
 
   // wait for button press (LOW)
   while (digitalRead(BUTTON_PIN) == HIGH && !isRunning) {
-    ArduinoCloud.update();
+    #ifdef USE_ARDUINO_CLOUD
+      ArduinoCloud.update();
+    #endif
     delay(10);
   }
   // simple debounce
@@ -53,9 +59,7 @@ void loop() {
   motorControl(2, BACKWARD);
   displayCenteredText("Cleaning");
   delay(CLEANING_DURATION);
-  motorControl(0, STOP);
-  motorControl(1, STOP);
-  motorControl(2, STOP);
+  stopAll();
   delay(PUMP_DELAY);
 
   // sampling stage
@@ -90,7 +94,11 @@ void loop() {
   displayCenteredText("Cycle complete...");
   
   isRunning = false;
-  ArduinoCloud.update();
+  #ifdef USE_ARDUINO_CLOUD
+    ArduinoCloud.update();
+  #endif
+
+  delay(RESTART_DELAY);
 }
 
 

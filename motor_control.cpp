@@ -31,7 +31,7 @@ void vibrate(){
 
 // toggle peristaltic pump in forward/backward direction for specific duration
 void motorControl(uint8_t motorId, Direction dir) {
-    stopAll();  // ensure no two motors run simultaneously
+    // stopAll();  // ensure no two motors run simultaneously
     if(dir != STOP) {Serial.print("P"); Serial.print(motorId + 1); Serial.print(" -> ");}
     // set direction pins
     switch (dir) {

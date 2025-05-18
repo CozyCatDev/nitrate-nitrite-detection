@@ -2,6 +2,7 @@
 
 #ifdef USE_THINGSPEAK
   WiFiClient client;
+  float nitrateAbs, nitriteAbs, chipTemp;
 #endif
 
 void initIoT(){

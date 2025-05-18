@@ -5,17 +5,19 @@
 
 #include <ArduinoIoTCloud.h>
 #include <Arduino_ConnectionHandler.h>
+#include "macros.h"
 #include "secrets.h"
 
 // uncomment if need callback function for bool isRunning
 // void onIsRunningChange();
 
-extern float chipTemp;
-extern float nitrateAbs;
-extern float nitriteAbs;
-extern bool isRunning;
-
-void initProperties();
-extern WiFiConnectionHandler ArduinoIoTPreferredConnection;
+#ifdef USE_ARDUINO_CLOUD
+  extern float chipTemp;
+  extern float nitrateAbs;
+  extern float nitriteAbs;
+  extern bool isRunning;
+  void initProperties();
+  extern WiFiConnectionHandler ArduinoIoTPreferredConnection;
+#endif
 
 #endif

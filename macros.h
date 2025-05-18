@@ -17,7 +17,7 @@
 //3 -> 1
 //1 -> 2
 //
-// motor driver pins
+// motor driver pins, P2 and P3 pins reversed as they were installed in reverse
 #define P1A 27
 #define P1B 14
 #define P2B 26
@@ -33,7 +33,7 @@
 #define DISPELLING_DURATION 50000
 #define SENDING_DATA_DURATION 5000
 #define PUMP_DELAY 500
-
+#define RESTART_DELAY 5000
 
 //66.5ml per min
 #endif
