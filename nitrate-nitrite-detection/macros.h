@@ -1,0 +1,34 @@
+#ifndef MACROS_H
+#define MACROS_H
+
+// OLED dimensions
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+
+// pin definitions
+#define TOUCH_PIN 4
+#define RELAY_PIN 16
+#define BUTTON_PIN 23
+
+//3 -> 1
+//1 -> 2
+//
+// motor driver pins
+#define P1A 27
+#define P1B 14
+#define P2B 26
+#define P2A 25
+#define P3A 33
+#define P3B 32
+
+// duration values
+#define CLEAN_DURATION 5000
+#define SAMPLING_DURATION 42162 
+#define ADD_SOLUTION_DURATION 3090
+#define MIXING_DURATION 3000
+#define DISPEL_DURATION 50000
+#define PUMP_DELAY 500
+
+
+//66.5ml per min
+#endif

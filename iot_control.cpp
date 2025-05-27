@@ -48,6 +48,7 @@ void sendIoTData(){
   Serial.println("°C");
 
   #ifdef USE_THINGSPEAK
+    Serial.println("Sending data to ThingSpeak");
     // Set field values
     ThingSpeak.setField(1, nitrateAbs);
     ThingSpeak.setField(2, nitriteAbs);
@@ -64,6 +65,7 @@ void sendIoTData(){
       Serial.println("Problem writing to channel. HTTP error code " + String(httpCode));
     }
   #elif defined(USE_ARDUINO_CLOUD)
+    Serial.println("Sending data to Arduino Cloud");
     ArduinoCloud.update();
   #endif
 }

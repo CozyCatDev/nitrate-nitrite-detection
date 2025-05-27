@@ -53,15 +53,21 @@ void loop() {
 
   Serial.println("\n=== Button pressed! Beginning one full cycle ===");
 
-  // clean P1, P2, P3 tubes
+
+  // clean P1
   motorControl(0, BACKWARD);
-  motorControl(1, BACKWARD);
-  motorControl(2, BACKWARD);
   displayCenteredText("Cleaning");
   delay(CLEANING_DURATION);
-  stopAll();
+  motorControl(0, STOP);
   delay(PUMP_DELAY);
 
+  // clean P2
+  motorControl(1, BACKWARD);
+  displayCenteredText("Cleaning");
+  delay(CLEANING_DURATION);
+  motorControl(1, STOP);
+  delay(PUMP_DELAY);
+  
   // sampling stage
   motorControl(0, FORWARD);
   showAnimatedScreen(samplingFrames, "SAMPLING", SAMPLING_DURATION);
